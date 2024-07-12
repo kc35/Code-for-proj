@@ -43,12 +43,12 @@ class RTError(Error):
     self.context = context
 
   def as_string(self):
-    result  = self.generate_traceback()
+    result  = self.generate_tracebk()
     result += f'{self.error_name}: {self.details}'
     result += '\n\n' + string_with_arrows(self.pos_start.ftxt, self.pos_start, self.pos_end)
     return result
 
-  def generate_traceback(self):
+  def generate_tracebk(self):
     result = ''
     pos = self.pos_start
     ctx = self.context
@@ -58,7 +58,7 @@ class RTError(Error):
       pos = ctx.parent_entry_pos
       ctx = ctx.parent
 
-    return 'Traceback (most recent call last):\n' + result
+    return 'tracebk (most recent call last):\n' + result
 
 class Position:
   def __init__(self, idx, ln, col, fn, ftxt):
