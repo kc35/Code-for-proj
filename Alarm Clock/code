@@ -1,1 +1,23 @@
+import datetime  
+import time  
+import winsound 
 
+alrm_time = datetime.datetime.now().replace(hour=7, minute=0, second=0, microsecond=0)
+
+def play_alarm():
+    alrm_time = datetime.datetime.now().replace(hour=7, minute=0, second=0, microsecond=0)
+
+    while True:
+        curr_time = datetime.datetime.now()
+
+        if curr_time >= alrm_time:
+            print("Wake up!")  
+            frequency = 3500 
+            duration = 3000 #dont cross 10,000 as it leads to unknown errors and the sound will keep playing even if you stop your specific idle. 
+            winsound.Beep(frequency, duration)  
+            break  
+
+        else:
+            time.sleep(1)  # Wait for 1 second before checking the time again
+
+play_alarm()
