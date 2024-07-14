@@ -1,4 +1,5 @@
 #Use python -m venv venv to create virtual environment, 
 #use venv\Scripts\activate to activate the venv
+run "python manage.py runserver" to start server
 #visit, "http://localhost:8000/" for the blog 
 
