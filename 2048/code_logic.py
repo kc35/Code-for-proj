@@ -1,148 +1,109 @@
+import tkinter as tk
 import random
 
-def strt_gm():
- 
-    m =[]
-    for i in range(4):
-        m.append([0] * 4)
+class Game2048:
+    def __init__(self, master):
+        self.master = master
+        self.master.title("2048")
+        self.master.geometry("400x400")
+        self.master.bind("<Key>", self.handle_key)
 
-    print("Commands are as follows : ")
-    print("'W' or 'w' : Move Up")
-    print("'S' or 's' : Move Down")
-    print("'A' or 'a' : Move Left")
-    print("'D' or 'd' : Move Right")
+        self.grid_size = 4
+        self.grid = [[0] * self.grid_size for _ in range(self.grid_size)]
+        self.score = 0
 
-    addition_of_new(m)
-    return m
+        self.init_grid()
+        self.add_tile()
+        self.update_grid()
 
-def addition_of_new(m):
- 
-    r = random.randint(0, 3)
-    c = random.randint(0, 3)
+    def init_grid(self):
+        self.tiles = []
+        for i in range(self.grid_size):
+            row = []
+            for j in range(self.grid_size):
+                tile = tk.Label(self.master, text="", font=("Helvetica", 32), width=4, height=2, relief="raised")
+                tile.grid(row=i, column=j, padx=5, pady=5)
+                row.append(tile)
+            self.tiles.append(row)
 
-    while(m[r] != 0):
-        r = random.randint(0, 3)
-        c = random.randint(0, 3)
- 
-    m[r] = 2
- 
-def get_current_state(m):
- 
-    for i in range(4):
-        for j in range(4):
-            if(m[i][j]== 2048):
-                return 'WON'
+    def add_tile(self):
+        empty_cells = [(i, j) for i in range(self.grid_size) for j in range(self.grid_size) if self.grid[i][j] == 0]
+        if empty_cells:
+            i, j = random.choice(empty_cells)
+            self.grid[i][j] = 2 if random.random() < 0.9 else 4
 
-    for i in range(4):
-        for j in range(4):
-            if(m[i][j]== 0):
-                return 'GAME NOT OVER'
- 
-    for i in range(3):
-        for j in range(3):
-            if(m[i][j]== m[i + 1][j] or m[i][j]== m[i][j + 1]):
-                return 'GAME NOT OVER'
- 
-    for j in range(3):
-        if(m[3][j]== m[3][j + 1]):
-            return 'GAME NOT OVER'
- 
-    for i in range(3):
-        if(m[i][3]== m[i + 1][3]):
-            return 'GAME NOT OVER'
- 
-    return 'LOST'
+    def update_grid(self):
+        for i in range(self.grid_size):
+            for j in range(self.grid_size):
+                value = self.grid[i][j]
+                if value == 0:
+                    self.tiles[i][j].configure(text="", bg="lightgray")
+                else:
+                    self.tiles[i][j].configure(text=str(value), bg="lightblue")
+        self.master.update_idletasks()
 
-def comp(m):
+    def handle_key(self, event):
+        if event.keysym in ['Up', 'Down', 'Left', 'Right']:
+            self.move_tiles(event.keysym)
+            self.add_tile()
+            self.update_grid()
+            if self.check_game_over():
+                print("Game Over! Score:", self.score)
 
-    changed = False
-  
-    new_m = []
- 
-    for i in range(4):
-        new_m.append([0] * 4)
-         
-    for i in range(4):
-        pos = 0
+    def move_tiles(self, direction):
+        if direction == 'Up':
+            self.grid = self.transpose(self.grid)
+            self.grid = self.merge_tiles(self.grid)
+            self.grid = self.transpose(self.grid)
+        elif direction == 'Down':
+            self.grid = self.reverse(self.transpose(self.grid))
+            self.grid = self.merge_tiles(self.grid)
+            self.grid = self.transpose(self.reverse(self.grid))
+        elif direction == 'Left':
+            self.grid = self.merge_tiles(self.grid)
+        elif direction == 'Right':
+            self.grid = self.reverse(self.grid)
+            self.grid = self.merge_tiles(self.grid)
+            self.grid = self.reverse(self.grid)
 
-        for j in range(4):
-            if(m[i][j] != 0):
-                 
-                new_m[i][pos] = m[i][j]
-                 
-                if(j != pos):
-                    changed = True
-                pos += 1
- 
-    return new_m, changed
- 
-def merge(m):
-     
-    changed = False
-     
-    for i in range(4):
-        for j in range(3):
- 
-            if(m[i][j] == m[i][j + 1] and m[i][j] != 0):
- 
-                m[i][j] = m[i][j] * 2
-                m[i][j + 1] = 0
+    def merge_tiles(self, grid):
+        score = 0
+        for i in range(self.grid_size):
+            j = 0
+            while j < self.grid_size - 1:
+                if grid[i][j] == grid[i][j+1] and grid[i][j] != 0:
+                    grid[i][j] *= 2
+                    score += grid[i][j]
+                    grid[i][j+1] = 0
+                    j += 2
+                else:
+                    j += 1
+        self.score += score
+        return grid
 
-                changed = True
- 
-    return m, changed
- 
-def reverse(m):
-    new_m =[]
-    for i in range(4):
-        new_m.append([])
-        for j in range(4):
-            new_m[i].append(m[i][3 - j])
-    return new_m
- 
-def transpose(m):
-    new_m = []
-    for i in range(4):
-        new_m.append([])
-        for j in range(4):
-            new_m[i].append(m[j][i])
-    return new_m
- 
-def move_left(grid):
+    def check_game_over(self):
+        for i in range(self.grid_size):
+            for j in range(self.grid_size):
+                if self.grid[i][j] == 0:
+                    return False
+                if j < self.grid_size - 1 and self.grid[i][j] == self.grid[i][j+1]:
+                    return False
+                if i < self.grid_size - 1 and self.grid[i][j] == self.grid[i+1][j]:
+                    return False
+        return True
 
-    new_grid, changed1 = compress(grid)
+    @staticmethod
+    def transpose(matrix):
+        return [[row[i] for row in matrix] for i in range(len(matrix[0]))]
 
-    new_grid, changed2 = merge(new_grid)
-     
-    changed = changed1 or changed2
- 
-    new_grid, temp = compress(new_grid)
+    @staticmethod
+    def reverse(matrix):
+        return [row[::-1] for row in matrix]
 
-    return new_grid, changed
- 
-def move_right(grid):
- 
-    new_grid = reverse(grid)
+def main():
+    root = tk.Tk()
+    game = Game2048(root)
+    root.mainloop()
 
-    new_grid, changed = move_left(new_grid)
- 
-    new_grid = reverse(new_grid)
-    return new_grid, changed
- 
-def move_up(grid):
- 
-    new_grid = transpose(grid)
-
-    new_grid, changed = move_left(new_grid)
- 
-    new_grid = transpose(new_grid)
-    return new_grid, changed
- 
-def move_down(grid):
- 
-    new_grid = transpose(grid)
- 
-    new_grid, changed = move_right(new_grid)
- 
-    new_grid = transpose(new_grid)
-    return new_grid, changed
+if __name__ == "__main__":
+    main()
