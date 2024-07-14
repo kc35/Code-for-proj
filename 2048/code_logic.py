@@ -1,7 +1,7 @@
 import tkinter as tk
 import random
 
-class Game2048:
+class gm_2048:
     def __init__(self, master):
         self.master = master
         self.master.title("2048")
@@ -12,11 +12,11 @@ class Game2048:
         self.grid = [[0] * self.grid_size for _ in range(self.grid_size)]
         self.score = 0
 
-        self.init_grid()
+        self.int_grd()
         self.add_tile()
         self.update_grid()
 
-    def init_grid(self):
+    def int_grd(self):
         self.tiles = []
         for i in range(self.grid_size):
             row = []
@@ -102,7 +102,7 @@ class Game2048:
 
 def main():
     root = tk.Tk()
-    game = Game2048(root)
+    game = gm_2048(root)
     root.mainloop()
 
 if __name__ == "__main__":
