@@ -5,7 +5,7 @@ class gm_2048:
     def __init__(self, master):
         self.master = master
         self.master.title("2048")
-        self.master.geometry("400x400")
+        self.master.geometry("800x800")
         self.master.bind("<Key>", self.handle_key)
 
         self.grid_size = 4
