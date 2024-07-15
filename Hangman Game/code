@@ -1,0 +1,43 @@
+import random
+def hangman():
+    word_list = ['python','java', 'kotlin', 'javascript']
+    random_number = random.randint(0, 3)
+    word = word_list[random_number]
+    hint = word[:3] + '-' * (len(word) - 3)
+    tries = 8
+    letters = set()
+    while tries > 0:
+        print()
+        print(hint)
+        guess = input('Input a letter: ')
+        if len(guess) != 1:
+            print('You should input a single letter')
+        elif not guess.islower():
+            print('It is not an ASCII lowercase letter')
+        elif guess in letters:
+            print('You already typed this letter')
+        elif guess not in word:
+            print('No such letter in the word')
+            letters.add(guess)
+            tries -= 1
+        else:
+            letters.add(guess)
+            hint = ''''''
+            for letter in word:
+                if letter in letters:
+                    hint += letter
+                else:
+                    hint += '-'
+            if hint == word:
+                print('You guessed the word!')
+                print('You survived!')
+                break
+    else:
+        print("You are hanged!")
+print("H A N G M A N")
+while True:
+    choice = input('Type ""play"" to play the game, ""exit"" to quit: ')
+    if choice == "play":
+        hangman()
+    elif choice == "exit":
+        break
