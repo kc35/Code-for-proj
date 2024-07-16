@@ -1,0 +1,28 @@
+import requests
+
+class Currency_convor:
+
+    rates = {}
+    def __init__(self, url):
+        data = requests.get(url).json()
+
+        self.rates = data["rates"]
+
+    def conv(self, from_currency, to_currency, amount):
+        initial_amount = amount
+        if from_currency != 'EUR' :
+            amount = amount / self.rates[from_currency]
+
+        amount = round(amount * self.rates[to_currency], 2)
+        print('{} {} = {} {}'.format(initial_amount, from_currency, amount, to_currency))
+
+if __name__ == "__main__":
+
+    # ACCESS_KEY = 'GET ACCESS KEY FROM fixer.io'
+    url = str.__add__('http://data.fixer.io/api/latest?access_key=', YOUR_ACCESS_KEY)
+    c = Currency_convor(url)
+    from_country = input("From Country: ")
+    to_country = input("TO Country: ")
+    amount = int(input("Amount: "))
+
+    c.conv(from_country, to_country, amount)
