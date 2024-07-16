@@ -1,0 +1,31 @@
+import tkinter as tk
+
+story = "One day my friend and I found a {adjective} looking {noun} on the {noun}. My friend decided to {verb} it while I {verb}ed."
+def play_again():
+   adj_entry.delete(0, tk.END)
+   noun_entry1.delete(0, tk.END)
+   story_text.delete(1.0, tk.END)
+def generate_story():
+   adjective = adj_entry.get()
+   noun1 = noun_entry1.get()
+   noun2 = noun_entry2.get()
+   verb1 = verb_entry1.get()
+   verb2 = verb_entry2.get()
+   story_text.insert(tk.END, story.format(adjective=adjective, noun=noun1, noun2=noun2, verb=verb1, verb2=verb2))
+root = tk.Tk()
+root.title("Mad Libs")
+adj_entry = tk.Entry(root)
+adj_entry.pack()
+noun_entry1 = tk.Entry(root)
+noun_entry1.pack()
+noun_entry2 = tk.Entry(root)
+noun_entry2.pack()
+verb_entry1 = tk.Entry(root)
+verb_entry1.pack()
+verb_entry2 = tk.Entry(root)
+verb_entry2.pack()
+story_text = tk.Text(root, height=8, width=40)
+story_text.pack()
+play_button = tk.Button(root, text="Play Again", command=play_again)
+play_button.pack()
+root.mainloop()
