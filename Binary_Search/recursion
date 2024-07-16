@@ -1,1 +1,30 @@
+def binary_search_num(list_num, first_index, last_index, to_search_num):
+    if last_index >= first_index:
+
+        mid_index_num = (first_index + last_index) // 2
+        mid_element_num = list_num[mid_index_num]
+
+
+        if mid_element_num == to_search_num:
+            return f"{mid_element_num} occurs in position {mid_index_num}"
+
+        elif mid_element_num > to_search_num:
+            new_position = mid_index_num - 1
+            # new last index is the new position
+            return binary_search_num(list_num, first_index, new_position, to_search_num)
+
+        elif mid_element_num < to_search_num:
+            new_position = mid_index_num + 1
+             # new first index is the new position
+            return binary_search_num(list_num, new_position, last_index, to_search_num)
+
+    else:
+        return " Does not appear in the list"
+       
+list_container = [ 2, 10, 12, 19, 29, 51, 66, 93 ]
+search_num = 66
+first = 0
+last= len(list_container) - 1
+
+print(binary_search_num(list_container,first,last,search_num))
 
