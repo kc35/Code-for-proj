@@ -1,0 +1,51 @@
+import random
+
+number = random.randrange(1000, 10000)
+
+m = int(input("Guess the 4 digit numberber:"))
+
+if(m == number):
+    print("Great! You guessed the numberber in just 1 try! You're a Mastermind!")
+else:
+
+    ctr = 0
+
+    while(m != number):
+        
+        ctr += 1
+
+        count = 0
+
+        m = str(m)
+
+        number = str(number)
+
+        correct = []
+
+        for i in range(0, 4):
+            if(m[i] == number[i]):
+                count += 1
+                correct.append(m[i])
+            else:
+                continue
+
+        if (count < 4) and (count != 0):
+            print("Not quite the numberber. But you did get ",
+                  count, " digit(s) correct!")
+            print("Also these numberbers in your input were correct.")
+
+            for k in correct:
+                print(k, end=' ')
+
+            print('\n')
+            print('\n')
+            m = int(input("Enter your next choice of numberbers: "))
+
+        # when none of the digits are guessed correctly.
+        elif(count == 0):
+            print("None of the numberbers in your input match.")
+            m = int(input("Enter your next choice of numberbers: "))
+
+    if m == number:
+        print("You've become a Mastermind!")
+        print("It took you only", ctr, "tries.")
