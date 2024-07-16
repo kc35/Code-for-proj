@@ -1,0 +1,11 @@
+from lxml import etree
+
+# Parse the XML file
+tree = etree.parse('example.xml')
+
+# Get the root element
+root = tree.getroot()
+
+# XPath query example
+for element in root.xpath('//tag[@attribute="value"]'):
+print(element.text)
