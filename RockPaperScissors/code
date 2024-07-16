@@ -1,0 +1,74 @@
+import random
+print('Winning rules of the game ROCK PAPER SCISSORS are :\n'
+      + "Rock vs Paper __ Paper wins \n"
+      + "Rock vs Scissors __ Rock wins \n"
+      + "Paper vs Scissors __ Scissor wins \n")
+
+while True:
+
+    print("Enter your choice \n 1 - Rock \n 2 - Paper \n 3 - Scissors \n")
+
+    choice = int(input("Enter your choice :"))
+
+    while choice > 3 or choice < 1:
+        choice = int(input('Enter a valid choice please '))
+
+    if choice == 1:
+        choice_name = 'Rock'
+    elif choice == 2:
+        choice_name = 'Paper'
+    else:
+        choice_name = 'Scissors'
+
+    print('User choice is \n', choice_name)
+    print('Now its Computers Turn....')
+
+    choice = random.randint(1, 3)
+
+    while choice == choice:
+        choice = random.randint(1, 3)
+
+    if choice == 1:
+        choice_name = 'RocK'
+    elif choice == 2:
+        choice_name = 'Paper'
+    else:
+        choice_name = 'Scissors'
+    print("Computer choice is \n", choice_name)
+    print(choice_name, 'Vs', choice_name)
+    if choice == choice:
+        print('Its a Draw', end="")
+        result = "DRAW"
+    if (choice == 1 and choice == 2):
+        print('paper wins =>', end="")
+        result = 'Paper'
+    elif (choice == 2 and choice == 1):
+        print('paper wins =>', end="")
+        result = 'Paper'
+
+    if (choice == 1 and choice == 3):
+        print('Rock wins =>\n', end="")
+        result = 'Rock'
+    elif (choice == 3 and choice == 1):
+        print('Rock wins =>\n', end="")
+        result = 'RocK'
+
+    if (choice == 2 and choice == 3):
+        print('Scissors wins =>', end="")
+        result = 'Scissors'
+    elif (choice == 3 and choice == 2):
+        print('Scissors wins =>', end="")
+        result = 'Rock'
+
+    if result == 'DRAW':
+        print("<== Its a tie ==>")
+    if result == choice_name:
+        print("<== User wins ==>")
+    else:
+        print("<== Computer wins ==>")
+    print("Do you want to play again? (Y/N)")
+    ans = input().lower()
+    if ans == 'n':
+        break
+  
+print("thanks for playing")
