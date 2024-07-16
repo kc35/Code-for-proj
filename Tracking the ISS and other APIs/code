@@ -1,0 +1,126 @@
+import requests
+import json
+
+def get_stock_data():
+    url = f"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=IBM&interval=5min&outputsize=full&apikey=demo"
+    response = requests.get(url)
+
+    if response.status_code == 200:
+        data = response.json()
+        last_refreshed = data["Meta Data"]["3. Last Refreshed"]
+        price = data["Time Series (5min)"][last_refreshed]["1. open"]
+        return price
+    else:
+        return None
+
+stock_prices = {}
+price = get_stock_data()
+symbol="IBM"
+if price is not None:
+    stock_prices[symbol] = price
+
+print(f"{symbol}: {price}")
+
+import requests
+API_KEY = '3805f6bbabcb42b3a0c08a489baf603d'
+url = f"https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey={API_KEY}"
+response = requests.get(url)
+print(response.status_code)
+
+import json
+import requests
+
+def fetch_and_print_articles(api_url):
+    response = requests.get(api_url)
+
+    if response.status_code == 200:
+        articles = response.json().get('articles', [])
+
+        for index, article in enumerate(articles[:3], start=1):
+            print(f"Article {index}:\n{json.dumps(article, sort_keys=True, indent=4)}\n")
+    else:
+        print(f"Error: {response.status_code}")
+
+API_KEY = '3805f6bbabcb42b3a0c08a489baf603d'
+api_endpoint = f"https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey={API_KEY}"
+
+fetch_and_print_articles(api_endpoint)
+
+def jprint(obj):
+    print(json.dumps(obj, sort_keys=True, indent=4)
+
+import requests
+
+API_URL = "https://newsapi.org/v2/top-headlines"
+API_KEY = "3805f6bbabcb42b3a0c08a489baf603d"
+
+params = {
+    "country": "us",
+    "apiKey": API_KEY
+}
+
+response = requests.get(API_URL, params=params)
+  
+if response.status_code == 200:
+    # Printing the JSON response
+    print(response.json())
+else:
+    print(f"Error: {response.status_code}")
+
+import json
+import turtle
+
+import urllib.request
+import time
+
+import webbrowser
+
+import geocoder
+
+url = "http://api.open-notify.org/astros.json"
+response = urllib.request.urlopen(url)
+result = json.loads(response.read())
+file = open("iss.txt", "w")
+file.write("There are currently " +
+            # prints number of astronauts
+        str(result["number"]) + " astronauts on the ISS: \n\n")
+people = result["people"]
+
+for p in people:
+    file.write(p['name'] + " - on board" + "\n")
+      
+g = geocoder.ip('me')
+file.write("\nYour current lat / long is: " + str(g.latlng))
+file.close()
+webbrowser.open("iss.txt")
+  
+screen = turtle.Screen()
+screen.setup(1280, 720)
+screen.setworldcoordinates(-180, -90, 180, 90)
+
+screen.bgpic("images/map.gif")
+screen.register_shape("images\iss.gif")
+iss = turtle.Turtle()
+iss.shape("images\iss.gif")
+iss.setheading(45)
+iss.penup()
+
+while True:
+
+    url = "http://api.open-notify.org/iss-now.json"
+    response = urllib.request.urlopen(url)
+    result = json.loads(response.read())
+
+    location = result["iss_position"]
+    lat = location['latitude']
+    lon = location['longitude']
+
+    lat = float(lat)
+    lon = float(lon)
+    print("\nLatitude: " + str(lat))
+    print("\nLongitude: " + str(lon))
+
+    iss.goto(lon, lat)
+
+    time.sleep(5)
+
