@@ -1,0 +1,22 @@
+import random, string
+
+no_of_dig = 3
+no_of_punc_char = 2
+char = string.ascii_letters + string.digits + string.punctuation
+
+num_of_pass = int(input("How many passwords do you want to generate? "))
+pass_length = int(input("Provide the password length: "))
+
+for password_index in range(num_of_pass):
+    password = ""
+
+    for digits_index in range(no_of_dig):
+        password = password + random.choice(string.digits)
+
+    for punctuation_index in range(no_of_punc_char):
+        password = password + random.choice(string.punctuation)
+
+    for index in range(pass_length - no_of_dig - no_of_punc_char):
+        password = password + random.choice(string.ascii_letters)
+
+    print("Password {} generated: {}".format(password_index, password))
