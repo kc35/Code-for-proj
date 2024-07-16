@@ -1,0 +1,56 @@
+M = 9
+def puzzle_(a):
+	for i in range(M):
+		for j in range(M):
+			print(a[i][j],end = " ")
+		print()
+def solver(grid, rows, col, num):
+	for x in range(9):
+		if grid[rows][x] == num:
+			return False
+
+	for x in range(9):
+		if grid[x][col] == num:
+			return False
+
+	startrows = rows - rows % 3
+	startCol = col - col % 3
+	for i in range(3):
+		for j in range(3):
+			if grid[i + startrows][j + startCol] == num:
+				return False
+	return True
+
+def Suduko(grid, rows, col):
+
+	if (rows == M - 1 and col == M):
+		return True
+	if col == M:
+		rows += 1
+		col = 0
+	if grid[rows][col] > 0:
+		return Suduko(grid, rows, col + 1)
+	for num in range(1, M + 1, 1):
+
+		if solver(grid, rows, col, num):
+
+			grid[rows][col] = num
+			if Suduko(grid, rows, col + 1):
+				return True
+		grid[rows][col] = 0
+	return False
+
+grid = [[0, 7, 0, 0, 2, 0, 0, 4, 6],
+        [0, 6, 0, 0, 0, 0, 8, 9, 0],
+	[2, 0, 0, 8, 0, 0, 7, 1, 5],
+	[0, 8, 4, 0, 9, 7, 0, 0, 0],
+	[7, 1, 0, 0, 0, 0, 0, 5, 9],
+	[0, 0, 0, 1, 3, 0, 4, 8, 0],
+	[6, 9, 7, 0, 0, 2, 0, 0, 8],
+	[0, 5, 8, 0, 0, 0, 0, 6, 0],
+	[4, 3, 0, 0, 8, 0, 0, 7, 0]]
+
+if (Suduko(grid, 0, 0)):
+	puzzle_(grid)
+else:
+	print("Solution does not exist")
