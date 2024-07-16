@@ -1,0 +1,148 @@
+import datetime
+
+# pssd means password, ussnm is username
+def user_information(usrnm, passw):
+    name = input("Enter your name please: ")
+    address = input("your address")
+    age = input("Your age please")
+    usrnm_ = usrnm+" task.txt"
+    f = open(usrnm_, 'a')
+    f.write(passw)
+    f.write("\nName: ")
+    f.write(name)
+    f.write('\n')
+    f.write("Address :")
+
+    f.write(address)
+    f.write('\n')
+    f.write("Age :")
+    f.write(age)
+    f.write('\n')
+    f.close()
+
+
+def signup():
+    print("Enter username")
+    username = input("Enter here:  ")
+    password = input("Enter a password:  ")
+    user_information(username, password)
+    print(" Please proceed towards log in")
+    login()
+
+
+def login():
+    print("Please enter your username ")
+    user_nm = input("Enter here: ")
+
+    # Password as entered while logging in
+    passw_wr = (input("enterr the password"))+'\n'
+    try:
+        usernm = user_nm+" task.txt"
+        f_ = open(usernm, 'r')
+
+        # variable 'k' contains the password as saved
+        # in the file
+        k = f_.readlines(0)[0]
+        f_.close()
+
+        # Checking if the Password entered is same as
+        # the password saved while signing in
+        if passw_wr == k:
+            print(
+                "1--to view your data \n2--To add task \n3--Update\
+                task \n4--VIEW TASK STATUS")
+            a = input()
+
+            if a == '1':
+                view_data(usernm)
+            elif a == '2':
+                # add task
+                task_information(usernm)
+            elif a == '3':
+                task_update(user_nm)
+            elif a == '4':
+                task_update_viewer(user_nm)
+            else:
+                print("Wrong input !")
+        else:
+            print("Dear User, YOUR PASSWORD OR USERNAME IS WRONG")
+            login()
+
+    except Exception as e:
+        print(e)
+        login()
+
+
+def view_data(username):
+    ff = open(username, 'r')
+    print(ff.read())
+    ff.close()
+
+
+def task_information(username):
+    print("Dear user, enter the number of tasks you want to ADD")
+    j = int(input())
+    f1 = open(username, 'a')
+
+    for i in range(1, j+1):
+        task = input("enter the task")
+        target = input("enter the target")
+        pp = "TASK "+str(i)+' :'
+        qq = "TARGET "+str(i)+" :"
+
+        f1.write(pp)
+        f1.write(task)
+        f1.write('\n')
+        f1.write(qq)
+        f1.write(target)
+        f1.write('\n')
+        print("If you want to stop, press space bar otherwise enter")
+        s = input()
+        if s == ' ':
+            break
+    f1.close()
+
+
+def task_update(username):
+    username = username+" TASK.txt"
+    print("Please enter completed tasks ")
+    task_completed = input()
+
+    print("Enter tasks which are yet to be started")
+    task_not_started = input()
+
+    print("Enter task you are currently working on")
+    task_ongoing = input()
+
+    fw = open(username, 'a')
+    DT = str(datetime.datetime.now())
+    fw.write(DT)
+    fw.write("\n")
+    fw.write("COMPLETED TASK \n")
+    fw.write(task_completed)
+    fw.write("\n")
+    fw.write("ONGOING TASK \n")
+    fw.write(task_ongoing)
+    fw.write("\n")
+    fw.write("NOT YET STARTED\n")
+    fw.write(task_not_started)
+    fw.write("\n")
+
+
+def task_update_viewer(username):
+    usrnm = username+" TASK.txt"
+    o = open(usrnm, 'r')
+    print(o.read())
+    o.close()
+
+
+if __name__ == '__main__':
+    print("WELCOME TO Karan`S TASK MANAGER")
+    print("Dear User, are you new to this software")
+    a = int(input("Type 1 if new otherwise press 0 ::"))
+    if a == 1:
+        signup()
+    elif a == 0:
+        login()
+    else:
+        print("You have provided wrong input !")
