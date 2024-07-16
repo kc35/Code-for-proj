@@ -1,0 +1,20 @@
+names_ = []
+cont_num = []
+num = int(input("Enter the total number of contacts you want to save: "))
+for i in range(num):
+    name = input("Name: ")
+    contact_number = int(input("Contact Number: ")) 
+    names_.append(name)
+    cont_num.append(contact_number)
+print("\nName\t\t\tContact Number\n")
+for i in range(num):
+    print("{}\t\t\t{}".format(names_[i], cont_num[i]))
+search_term = input("\nEnter search term: ")
+print("Search result:")
+if search_term in names_:
+    index = names_.index(search_term)
+    contact_number = cont_num[index]
+    print("Name: {}, Phone Number: {}".format(search_term, contact_number))
+else:
+    print("No records")
+
