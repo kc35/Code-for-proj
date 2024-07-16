@@ -1,0 +1,69 @@
+def rm_mat_char(listone, listtwo):
+
+    for i in range(len(listone)):
+        for j in range(len(listtwo)):
+
+            if listone[i] == listtwo[j]:
+                c = listone[i]
+
+                listone.remove(c)
+                listtwo.remove(c)
+
+                listthree = listone + ["*"] + listtwo
+
+                return [listthree, True]
+
+    listthree = listone + ["*"] + listtwo
+    return [listthree, False]
+
+if __name__ == "__main__":
+
+    p1 = input("Player 1 name : ")
+
+    p1 = p1.lower()
+
+    p1.replace(" ", "")
+
+    p1_list = list(p1)
+
+    p2 = input("Player 2 name : ")
+    p2 = p2.lower()
+    p2.replace(" ", "")
+    p2_list = list(p2)
+
+    proceed = True
+
+    while proceed:
+
+        ret_l = rm_mat_char(p1_list, p2_list)
+
+        con_list = ret_l[0]
+
+        proceed = ret_l[1]
+
+        star_index = con_list.index("*")
+
+
+        p1_list = con_list[: star_index]
+
+        p2_list = con_list[star_index + 1:]
+
+    count = len(p1_list) + len(p2_list)
+
+    result = ["Friends", "Love", "Affection", "Marriage", "Enemy", "Siblings"]
+
+    while len(result) > 1:
+
+        split_ind = (count % len(result) - 1)
+
+        if split_ind >= 0:
+
+            right = result[split_ind + 1:]
+            left = result[: split_ind]
+
+            result = right + left
+
+        else:
+            result = result[: len(result) - 1]
+
+    print("Relationship status :", result[0])
