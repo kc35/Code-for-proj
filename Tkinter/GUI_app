@@ -1,1 +1,30 @@
+from tkinter import *
+
+root_acc = Tk()
+
+root_acc.title("Welcome to Karan's GUI app")
+root_acc.geometry('450x300')
+
+menu = Menu(root_acc)
+obj = Menu(menu)
+obj.add_command(label='New')
+menu.add_cascade(label='File', menu=obj)
+root_acc.config(menu=menu)
+
+lbl = Label(root_acc, text = "Are you a Human?")
+lbl.grid()
+
+text = Entry(root_acc, width=10)
+text.grid(column =1, row =0)
+
+def clicked():
+
+    res = "You wrote" + text.get()
+    lbl.configure(text = res)
+
+btn = Button(root_acc, text = "Click me" ,
+             fg = "red", command=clicked)
+btn.grid(column=2, row=0)
+
+root_acc.mainloop()
 
