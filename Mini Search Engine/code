@@ -1,0 +1,56 @@
+import tkinter as tk
+import requests
+from bs4 import BeautifulSoup
+import webbrowser
+
+documents = [
+    "Python is a programming language.",
+    "Search engines help us find information.",
+    "Machine learning is a subset of AI.",
+    "Data analysis involves processing data.",
+    "Space is filled with dark energy.",
+    "Karan is a boy"
+]
+
+def search_documents():
+    query = query_entry.get().lower()
+    matching_documents = []
+
+    for i, document in enumerate(documents):
+        if query in document.lower():
+            matching_documents.append(documents[i])
+
+    results_text.delete(1.0, tk.END)  # Clear previous results
+    if matching_documents:
+        results_text.insert(tk.END, "Matching Documents:\n")
+        for doc in matching_documents:
+            results_text.insert(tk.END, "- " + doc + "\n")
+    else:
+        results_text.insert(tk.END, "No matching documents found.")
+
+def search_web():
+    data = requests.get('https://www.google.com/search?q=' + query_entry.get())
+    soup = BeautifulSoup(data.content, "html.parser")
+    result = soup.select(".kCrYT a")
+    for link in result[:5]:
+        searching = link.get("href")
+        searching = searching[7:]
+        searching = searching.split("&")
+        webbrowser.open(searching[0])
+
+root = tk.Tk()
+root.title("Combined Search Engine")
+
+query_entry = tk.Entry(root)
+query_entry.pack()
+
+results_text = tk.Text(root, height=10, width=40)
+results_text.pack()
+
+doc_search_button = tk.Button(root, text="Search Documents", command=search_documents)
+doc_search_button.pack()
+
+web_search_button = tk.Button(root, text="Web Search", command=search_web)
+web_search_button.pack()
+
+root.mainloop()
