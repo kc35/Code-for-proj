@@ -1,0 +1,297 @@
+import random
+import os
+
+
+class Game:
+
+   def __init__(self, Game_face, value, symbol):
+       self.Game_face = Game_face
+       self.value = value
+       self.symbol = symbol
+
+
+def show_Games(Games, hidden):
+   s = ''
+   for Game in Games:
+       s = s + '\t ________________'
+   if hidden:
+       s += '\t ________________'
+   print(s)
+
+   s = ''
+   for Game in Games:
+       s = s + '\t|                |'
+   if hidden:
+       s += '\t|                |'
+   print(s)
+
+   s = ''
+   for Game in Games:
+       if Game.Game_face in ['J', 'Q', 'K', 'A']:
+           s = s + '\t|  {}             |'.format(Game.Game_face)
+       elif Game.value == 10:
+           s = s + '\t|  {}            |'.format(Game.value)
+       else:
+           s = s + '\t|  {}             |'.format(Game.value)
+
+   if hidden:
+       s += '\t|                |'
+   print(s)
+
+   s = ''
+   for Game in Games:
+       s = s + '\t|                |'
+   if hidden:
+       s += '\t|      * *       |'
+   print(s)
+
+   s = ''
+   for Game in Games:
+       s = s + '\t|                |'
+   if hidden:
+       s += '\t|    *     *     |'
+   print(s)
+
+   s = ''
+   for Game in Games:
+       s = s + '\t|                |'
+   if hidden:
+       s += '\t|   *       *    |'
+   print(s)
+
+   s = ''
+   for Game in Games:
+       s = s + '\t|                |'
+   if hidden:
+       s += '\t|   *       *    |'
+   print(s)
+
+   s = ''
+   for Game in Games:
+       s = s + '\t|       {}        |'.format(Game.symbol)
+   if hidden:
+       s += '\t|          *     |'
+   print(s)
+
+   s = ''
+   for Game in Games:
+       s = s + '\t|                |'
+   if hidden:
+       s += '\t|         *      |'
+   print(s)
+
+   s = ''
+   for Game in Games:
+       s = s + '\t|                |'
+   if hidden:
+       s += '\t|        *       |'
+   print(s)
+
+   s = ''
+   for Game in Games:
+       s = s + '\t|                |'
+   if hidden:
+       s += '\t|                |'
+   print(s)
+
+   s = ''
+   for Game in Games:
+       s = s + '\t|                |'
+   if hidden:
+       s += '\t|                |'
+   print(s)
+
+   s = ''
+   for Game in Games:
+       if Game.Game_face in ['J', 'Q', 'K', 'A']:
+           s = s + '\t|            {}   |'.format(Game.Game_face)
+       elif Game.value == 10:
+           s = s + '\t|           {}   |'.format(Game.value)
+       else:
+           s = s + '\t|            {}   |'.format(Game.value)
+   if hidden:
+       s += '\t|        *       |'
+   print(s)
+
+   s = ''
+   for Game in Games:
+       s = s + '\t|________________|'
+   if hidden:
+       s += '\t|________________|'
+   print(s)
+   print()
+
+
+def deal_Game(deck):
+   Game = random.choice(deck)
+   deck.remove(Game)
+   return Game, deck
+
+
+def play_blackjack(deck):
+   player_Games = []
+   dealer_Games = []
+   player_score = 0
+   dealer_score = 0
+   os.system('clear')
+
+   while len(player_Games) < 2:
+       player_Game, deck = deal_Game(deck)
+       player_Games.append(player_Game)
+       player_score += player_Game.value
+
+       if len(player_Games) == 2:
+           if player_Games[0].value == 11 and player_Games[1].value == 11:
+               player_Games[0].value = 1
+               player_score -= 10
+
+       print('PLAYER GameS: ')
+       show_Games(player_Games, False)
+       print('PLAYER SCORE = ', player_score)
+
+       input('Continue...')
+
+       dealer_Game, deck = deal_Game(deck)
+       dealer_Games.append(dealer_Game)
+       dealer_score += dealer_Game.value
+
+       if len(dealer_Games) == 2:
+           if dealer_Games[0].value == 11 and dealer_Games[1].value == 11:
+               dealer_Games[1].value = 1
+               dealer_score -= 10
+
+       print('DEALER GameS: ')
+       if len(dealer_Games) == 1:
+           show_Games(dealer_Games, False)
+           print('DEALER SCORE = ', dealer_score)
+       else:
+           show_Games(dealer_Games[:-1], True)
+           print('DEALER SCORE = ', dealer_score - dealer_Games[-1].value)
+
+       input('Continue...')
+
+   if player_score == 21:
+       print('PLAYER HAS A BLACKJACK!!!!')
+       print('PLAYER WINS!!!!')
+       quit()
+   os.system('clear')
+
+   print('DEALER GameS: ')
+   show_Games(dealer_Games[:-1], True)
+   print('DEALER SCORE = ', dealer_score - dealer_Games[-1].value)
+   print()
+   print('PLAYER GameS: ')
+   show_Games(player_Games, False)
+   print('PLAYER SCORE = ', player_score)
+
+   while player_score < 21:
+       choice = input('Enter H to Hit or S to Stand: ').upper()
+       if len(choice) != 1 or (choice not in ['H', 'S']):
+           os.system('clear')
+           print('Invalid choice!! Try Again...')
+           continue
+
+       if choice.upper() == 'S':
+           break
+       else:
+           player_Game, deck = deal_Game(deck)
+           player_Games.append(player_Game)
+           player_score += player_Game.value
+           Game_pos = 0
+
+           while player_score > 21 and Game_pos < len(player_Games):
+               if player_Games[Game_pos].value == 11:
+                   player_Games[Game_pos].value = 1
+                   player_score -= 10
+                   Game_pos += 1
+               else:
+                   Game_pos += 1
+
+           if player_score > 21:
+               break
+
+           os.system('clear')
+           print('DEALER GameS: ')
+           show_Games(dealer_Games[:-1], True)
+           print('DEALER SCORE = ', dealer_score - dealer_Games[-1].value)
+           print()
+           print('PLAYER GameS: ')
+           show_Games(player_Games, False)
+           print('PLAYER SCORE = ', player_score)
+
+   os.system('clear')
+   print('PLAYER GameS: ')
+   show_Games(player_Games, False)
+   print('PLAYER SCORE = ', player_score)
+   print()
+   print('DEALER IS REVEALING THEIR GameS....')
+   print('DEALER GameS: ')
+   show_Games(dealer_Games, False)
+   print('DEALER SCORE = ', dealer_score)
+
+   if player_score == 21:
+       print('PLAYER HAS A BLACKJACK, PLAYER WINS!!!')
+       quit()
+
+   if player_score > 21:
+       print('PLAYER BUSTED!!! GAME OVER!!!')
+       quit()
+
+   input('Continue...')
+   while dealer_score < 17:
+       os.system('clear')
+       print('DEALER DECIDES TO HIT.....')
+       dealer_Game, deck = deal_Game(deck)
+       dealer_Games.append(dealer_Game)
+       dealer_score += dealer_Game.value
+
+       Game_pos = 0
+       while dealer_score > 21 and Game_pos < len(dealer_Games):
+           if dealer_Games[Game_pos].value == 11:
+               dealer_Games[Game_pos].value = 1
+               dealer_score -= 10
+               Game_pos += 1
+           else:
+               Game_pos += 1
+
+       print('PLAYER GameS: ')
+       show_Games(player_Games, False)
+       print('PLAYER SCORE = ', player_score)
+       print()
+       print('DEALER GameS: ')
+       show_Games(dealer_Games, False)
+       print('DEALER SCORE = ', dealer_score)
+       if dealer_score > 21:
+           break
+       input('Continue...')
+
+   if dealer_score > 21:
+       print('DEALER BUSTED!!! YOU WIN!!!')
+       quit()
+   elif dealer_score == 21:
+       print('DEALER HAS A BLACKJACK!!! PLAYER LOSES!!!')
+       quit()
+   elif dealer_score == player_score:
+       print('TIE GAME!!!!')
+   elif player_score > dealer_score:
+       print('PLAYER WINS!!!')
+   else:
+       print('DEALER WINS!!!')
+
+def init_deck():
+   suits = ['Spades', 'Hearts', 'Clubs', 'Diamonds']
+   # UNICODE values for Game symbol images
+   suit_symbols = {'Hearts': '\u2661', 'Diamonds': '\u2662',
+                   'Spades': '\u2664', 'Clubs': '\u2667'}
+   Games = {'A': 11, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6,
+            '7': 7, '8': 8, '9': 9, '10': 10, 'J': 10, 'Q': 10, 'K': 10}
+   deck = []
+   for suit in suits:
+       for Game, value in Games.items():
+           deck.append(Game(Game, value, suit_symbols[suit]))
+   return deck
+
+
+if __name__ == '__main__':
+   deck = init_deck()
+   play_blackjack(deck)
