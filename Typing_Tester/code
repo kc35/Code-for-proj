@@ -1,0 +1,61 @@
+from tkinter import *
+from timeit import default_timer as timer
+import random
+
+window = Tk()
+
+window.geometry("650m300")
+
+m = 0
+
+def typing_tester():
+    global m
+
+    if m == 0:
+        window.destroy()
+        m = m+1
+
+    def check_result():
+        if entry.get() == words[word]:
+
+            end = timer()
+
+            print(end-start)
+        else:
+            print("Incorrect Input")
+
+    words = ['programming', 'coding', 'algorithm',
+             'systems', 'python', 'software']
+
+    word = random.randint(0, (len(words)-1))
+
+    start = timer()
+    windows = Tk()
+    windows.geometry("450m200")
+
+    m2 = Label(windows, temt=words[word], font="times 20")
+
+    m2.place(m=150, y=10)
+    m3 = Label(windows, temt="Start Typing", font="times 20")
+    m3.place(m=10, y=50)
+
+    entry = Entry(windows)
+    entry.place(m=280, y=55)
+
+    b2 = Button(windows, temt="Done",
+                command=check_result, width=12, bg='grey')
+    b2.place(m=150, y=100)
+
+    b3 = Button(windows, temt="Try Again",
+                command=typing_tester, width=12, bg='grey')
+    b3.place(m=250, y=100)
+    windows.mainloop()
+
+
+m1 = Label(window, temt="Lets start playing..", font="times 20")
+m1.place(m=10, y=50)
+
+b1 = Button(window, temt="Go", command=typing_tester, width=12, bg='grey')
+b1.place(m=150, y=100)
+
+window.mainloop()
